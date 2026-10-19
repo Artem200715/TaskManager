@@ -1,0 +1,5 @@
+{% extends 'tasks/base.html' %}
+{% block content %}<h1>Менеджер задач</h1>
+<p>Здесь можно добавлять задачи и следить за их выполнением.</p>
+<a class="btn btn-primary" href="{% url 'tasks:task_list' %}">Мои задачи</a>
+{% endblock %}

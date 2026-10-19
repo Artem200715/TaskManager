@@ -1,0 +1,24 @@
+{% extends 'tasks/base.html' %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center flex-wrap mb-3">
+<h1>Мои задачи</h1><a class="btn btn-primary" href="{% url 'tasks:task_new' %}">Добавить задачу</a></div>
+{% for task in tasks %}
+<div class="card {% if task.completed %}completed{% elif task.due_date and task.due_date < now %}border-danger{% endif %}">
+<div class="card-body">
+<h5 class="card-title task-title">{{ task.title }}</h5>
+<p class="mb-2">Приоритет:
+{% if task.priority == 'high' %}<span class="badge badge-danger">Высокий</span>
+{% elif task.priority == 'normal' %}<span class="badge badge-primary">Обычный</span>
+{% else %}<span class="badge badge-secondary">Низкий</span>{% endif %}
+· {% if task.completed %}<strong>Выполнена</strong>{% else %}В работе{% endif %}
+</p>
+<p class="mb-2">Срок: {% if task.due_date %}{{ task.due_date|date:'d.m.Y H:i' }}{% else %}не указан{% endif %}
+{% if not task.completed and task.due_date and task.due_date < now %}<strong class="text-danger">Просрочена</strong>{% endif %}</p>
+{% if task.description %}<p class="card-text">{{ task.description|linebreaksbr }}</p>{% endif %}
+<a class="btn btn-outline-secondary btn-sm mb-1" href="{% url 'tasks:task_edit' task.id %}">Изменить</a>
+<a class="btn btn-outline-danger btn-sm mb-1" href="{% url 'tasks:task_delete' task.id %}">Удалить</a>
+<form class="inline-form" method="post" action="{% url 'tasks:task_toggle' task.id %}">{% csrf_token %}
+<button type="submit" class="btn btn-outline-primary btn-sm mb-1">{% if task.completed %}Вернуть в работу{% else %}Завершить{% endif %}</button></form>
+</div></div>
+{% empty %}<p>Задач пока нет. Нажмите «Добавить задачу».</p>{% endfor %}
+{% endblock %}
