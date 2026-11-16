@@ -22,7 +22,7 @@ services:
         python manage.py migrate --noinput
         python manage.py collectstatic --noinput
         # Запустить приложение одним рабочим процессом.
-        exec gunicorn task_manager.asgi:application \
+        exec gunicorn task_manager.wsgi:application \
           --bind 0.0.0.0:8000 \
           --workers 1 \
           --threads 4 \
