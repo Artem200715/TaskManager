@@ -2,7 +2,7 @@ services:
   web:
     build: .
     ports:
-      - "${APP_PORT:-8000}:8000"
+      - ""${APP_BIND_IP:-127.0.0.1}:${APP_PORT:-8000}:8000"
     environment:
       DJANGO_DB_PATH: /app/data/db.sqlite3
       DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY:?Укажите DJANGO_SECRET_KEY в .env}
